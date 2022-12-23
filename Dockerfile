@@ -4,9 +4,13 @@ WORKDIR /tmp
 
 COPY ./pyproject.toml ./poetry.lock* /tmp/
 
-RUN curl -sSL https://install.python-poetry.org -o install-poetry.py
+# RUN curl -sSL https://install.python-poetry.org -o install-poetry.py
 
-RUN python install-poetry.py --yes
+# RUN python install-poetry.py --yes
+
+RUN python3 -m pip config set global.index-url https://mirrors.aliyun.com/pypi/simple/
+
+RUN pip install poetry
 
 ENV PATH="${PATH}:/root/.local/bin"
 

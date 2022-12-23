@@ -536,6 +536,10 @@ class Chat:
         if '[CQ:reply,' in raw_message:
             return
 
+        # at别人的，不学
+        if '[CQ:at' in raw_message:
+            return
+
         keywords = self.chat_data.keywords
         group_id = self.chat_data.group_id
         pre_keywords = pre_msg['keywords']

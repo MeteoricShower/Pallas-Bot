@@ -1,6 +1,6 @@
 account:
-  uin: 机器人QQ号
-  password: "机器人密码"
+  uin: 2040323229
+  password: ""
 
 message:
   post-format: array

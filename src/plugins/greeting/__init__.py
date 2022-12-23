@@ -1,6 +1,7 @@
 from collections import defaultdict
 import random
 import asyncio
+import os
 
 from pathlib import Path
 from nonebot import on_command, on_message, on_notice, get_driver, get_bot
@@ -10,25 +11,28 @@ from nonebot.typing import T_State
 from nonebot.adapters import Bot, Event
 from src.common.config import BotConfig, GroupConfig, UserConfig
 
-from .wiki import Wiki, nudge
+# from .wiki import Wiki, nudge
 
-wiki = Wiki()
-wiki.download_pallas_voices()
-
-
-def get_voice(name: str):
-    oper = '帕拉斯'
-    file = wiki.voice_exists(oper, name)
-    if not file:
-        file = wiki.download_operator_voices(oper, name)
-        if not file:
-            return False
-    return file
+# wiki = Wiki()
+# wiki.download_pallas_voices()
 
 
-def get_rand_voice():
-    name = random.choice(nudge)
-    return get_voice(name)
+def get_voice():
+    # oper = '帕拉斯'
+    # file = wiki.voice_exists(oper, name)
+    # if not file:
+    #     file = wiki.download_operator_voices(oper, name)
+    #     if not file:
+    #         return False
+    resource_path = "resource/voices/帕拉斯/"
+    all_voice = os.listdir(resource_path)
+    voice = random.choice(all_voice)
+    return resource_path + voice
+
+
+# def get_rand_voice():
+#     name = random.choice(nudge)
+#     return get_voice(name)
 
 
 target_msgs = ['牛牛', '帕拉斯']
@@ -56,7 +60,7 @@ async def handle_first_receive(bot: Bot, event: GroupMessageEvent, state: T_Stat
         return
     config.refresh_cooldown('call_me')
 
-    msg: Message = MessageSegment.record(file=Path(get_rand_voice()))
+    msg: Message = MessageSegment.record(file=Path(get_voice()))
     await call_me_cmd.finish(msg)
 
 to_me_cmd = on_message(
@@ -74,7 +78,7 @@ async def handle_first_receive(bot: Bot, event: GroupMessageEvent, state: T_Stat
     config.refresh_cooldown('to_me')
 
     if len(event.get_plaintext().strip()) == 0 and not event.reply:
-        msg: Message = MessageSegment.record(file=Path(get_rand_voice()))
+        msg: Message = MessageSegment.record(file=Path(get_voice()))
         await to_me_cmd.finish(msg)
 
 all_notice = on_notice(

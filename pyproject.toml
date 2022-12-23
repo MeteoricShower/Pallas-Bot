@@ -1,3 +1,7 @@
+[[tool.poetry.source]]
+name = "tsinghua"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+
 [tool.poetry]
 name = "Pallas-Bot"
 version = "0.1.0"
